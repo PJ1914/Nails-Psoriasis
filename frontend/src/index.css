@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #2d3d43;
+  background: #f7f2ea;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.panel {
+  @apply rounded-3xl border border-white/60 bg-white/85 shadow-soft backdrop-blur;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center rounded-2xl bg-slatebrand-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slatebrand-800 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center rounded-2xl border border-slatebrand-200 bg-white px-5 py-3 text-sm font-semibold text-slatebrand-700 transition hover:border-slatebrand-300 hover:bg-slatebrand-50;
+}
+
+.input-field {
+  @apply w-full rounded-2xl border border-slatebrand-200 bg-white px-4 py-3 text-sm text-slatebrand-900 outline-none transition focus:border-slatebrand-500 focus:ring-2 focus:ring-slatebrand-100;
+}
+
+.section-title {
+  @apply text-2xl font-extrabold tracking-tight text-slatebrand-900 sm:text-3xl;
+}
+
+.muted-text {
+  @apply text-sm leading-6 text-slatebrand-600;
+}
