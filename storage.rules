@@ -24,25 +24,37 @@ service firebase.storage {
       return request.resource.contentType.matches('image/.*');
     }
     
-    // Nail scan images: user-specific folders
-    match /nail-scans/{userId}/{imageId} {
-      // Allow authenticated users to read their own images
-      allow read: if isAuthenticated() && isOwner(userId);
-      
-      // Allow authenticated users to upload to their own folder
-      allow write: if isAuthenticated() 
-                   && isOwner(userId) 
-                   && isValidSize() 
-                   && isImage();
-      
-      // Allow deletion of own images
-      allow delete: if isAuthenticated() && isOwner(userId);
+    // Helper function to check if user is a doctor
+    function isDoctor() {
+      return isAuthenticated() && 
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'doctor';
     }
     
-    // Additional rule: Allow doctors to read all nail scans
-    // (Requires custom claims or Firestore lookup - simplified version below)
+    // Nail scan images: user-specific folders
     match /nail-scans/{userId}/{imageId} {
-      allow read: if isAuthenticated();
+      // Users can read their own images
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Doctors can read all images
+      allow read: if isDoctor();
+      
+      // Users can upload to their own folder
+      allow create: if isAuthenticated() 
+                    && isOwner(userId) 
+                    && isValidSize() 
+                    && isImage();
+      
+      // Users can update their own images
+      allow update: if isAuthenticated() 
+                    && isOwner(userId) 
+                    && isValidSize() 
+                    && isImage();
+      
+      // Users can delete their own images
+      allow delete: if isAuthenticated() && isOwner(userId);
+      
+      // Doctors can delete any image
+      allow delete: if isDoctor();
     }
     
     // Deny everything else by default
