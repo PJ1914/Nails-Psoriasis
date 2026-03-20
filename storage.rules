@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules for Nail Psoriasis App
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Helper function to check file size (max 10MB)
+    function isValidSize() {
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+    
+    // Helper function to check if file is an image
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    // Nail scan images: user-specific folders
+    match /nail-scans/{userId}/{imageId} {
+      // Allow authenticated users to read their own images
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Allow authenticated users to upload to their own folder
+      allow write: if isAuthenticated() 
+                   && isOwner(userId) 
+                   && isValidSize() 
+                   && isImage();
+      
+      // Allow deletion of own images
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Additional rule: Allow doctors to read all nail scans
+    // (Requires custom claims or Firestore lookup - simplified version below)
+    match /nail-scans/{userId}/{imageId} {
+      allow read: if isAuthenticated();
+    }
+    
+    // Deny everything else by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

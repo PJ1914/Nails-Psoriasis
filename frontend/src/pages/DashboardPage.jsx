@@ -5,16 +5,22 @@ import StatCard from '../components/StatCard';
 import ReportCard from '../components/ReportCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
+import { useAuth } from '../hooks/useAuth';
 import { fetchHistory } from '../services/reportService';
 import { formatDate } from '../utils/formatters';
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const loadHistory = async () => {
+      if (!user) {
+        return;
+      }
+
       try {
         const response = await fetchHistory();
         setReports(response.reports || []);
@@ -26,7 +32,7 @@ export default function DashboardPage() {
     };
 
     loadHistory();
-  }, []);
+  }, [user]);
 
   const latestReport = reports[0];
   const averageScore = reports.length

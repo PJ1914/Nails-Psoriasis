@@ -1,0 +1,61 @@
+rules_version = '2';
+
+// Firestore Security Rules for Nail Psoriasis App
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isDoctor() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor';
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Users can create their own profile (during registration)
+      allow create: if isAuthenticated() && isOwner(userId);
+      
+      // Users can update their own profile
+      allow update: if isAuthenticated() && isOwner(userId);
+      
+      // Doctors can read all user profiles
+      allow read: if isDoctor();
+      
+      // No one can delete users (except through Firebase Admin SDK)
+      allow delete: if false;
+    }
+    
+    // Reports collection
+    match /reports/{reportId} {
+      // Users can read their own reports
+      allow read: if isAuthenticated() && 
+                     resource.data.user_id == request.auth.uid;
+      
+      // Doctors can read all reports
+      allow read: if isDoctor();
+      
+      // Users can create reports (through the prediction endpoint)
+      allow create: if isAuthenticated() && 
+                       request.resource.data.user_id == request.auth.uid;
+      
+      // No direct updates or deletes (managed through backend)
+      allow update, delete: if false;
+    }
+    
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

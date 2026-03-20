@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from firebase_admin import firestore
 from config.firebase import get_firestore_client
 from utils.serialization import serialize_document
 
@@ -26,6 +27,11 @@ def create_report(user_id, image_url, prediction):
         'severity': prediction['severity'],
         'features': prediction['features'],
         'processed_image_url': prediction['processed_image_url'],
+        'predicted_class': prediction.get('predicted_class'),
+        'confidence': prediction.get('confidence'),
+        'needs_review': prediction.get('needs_review', False),
+        'confidence_margin': prediction.get('confidence_margin'),
+        'model_votes': prediction.get('model_votes', {}),
         'created_at': datetime.now(timezone.utc),
     }
 
@@ -49,7 +55,7 @@ def list_reports_for_user(user_id):
     reports = [
         serialize_document(document)
         for document in firestore_client.collection(REPORTS_COLLECTION)
-        .where('user_id', '==', user_id)
+        .where(filter=firestore.FieldFilter('user_id', '==', user_id))
         .stream()
     ]
     return sorted(reports, key=lambda item: item.get('created_at', ''), reverse=True)
@@ -83,4 +89,34 @@ def list_all_reports(filters=None):
         ]
 
     return sorted(reports, key=lambda item: item.get('created_at', ''), reverse=True)
+
+
+def update_report(report_id, updates):
+    """Update a report with the provided fields."""
+    firestore_client = get_firestore_client()
+    document_reference = firestore_client.collection(REPORTS_COLLECTION).document(report_id)
+    
+    # Check if report exists
+    if not document_reference.get().exists:
+        return None
+    
+    # Add updated_at timestamp
+    updates['updated_at'] = datetime.now(timezone.utc)
+    
+    # Update the document
+    document_reference.update(updates)
+    return get_report_by_id(report_id)
+
+
+def delete_report(report_id):
+    """Delete a report by ID."""
+    firestore_client = get_firestore_client()
+    document_reference = firestore_client.collection(REPORTS_COLLECTION).document(report_id)
+    
+    # Check if report exists
+    if not document_reference.get().exists:
+        return False
+    
+    document_reference.delete()
+    return True
 

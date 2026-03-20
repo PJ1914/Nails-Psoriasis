@@ -24,3 +24,13 @@ export async function fetchReports(filters = {}) {
   const response = await api.get('/api/reports', { params: filters });
   return response.data;
 }
+
+export async function updateReport(reportId, updates) {
+  const response = await api.put(`/api/history/${reportId}`, updates);
+  return response.data;
+}
+
+export async function deleteReport(reportId) {
+  const response = await api.delete(`/api/history/${reportId}`);
+  return response.data;
+}

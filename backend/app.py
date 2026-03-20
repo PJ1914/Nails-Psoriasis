@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import logging
 
 from config.settings import settings
 from routes.admin_routes import admin_blueprint
@@ -10,6 +11,13 @@ from routes.prediction_routes import prediction_blueprint
 def create_app():
     app = Flask(__name__)
     app.config['JSON_SORT_KEYS'] = False
+
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
 
     CORS(
         app,

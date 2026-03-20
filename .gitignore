@@ -15,3 +15,16 @@ backend/*firebase-adminsdk*.json
 *.key
 *.p12
 coverage/
+
+# AI Model files (large binaries)
+ai-model/*.keras
+ai-model/*.h5
+ai-model/*.onnx
+ai-model/*.pt
+ai-model/*.pth
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

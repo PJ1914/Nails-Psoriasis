@@ -34,23 +34,32 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {
-      if (!nextUser) {
+      try {
+        if (!nextUser) {
+          startTransition(() => {
+            setUser(null);
+            setProfile(null);
+            setLoading(false);
+          });
+
+          return;
+        }
+
+        const nextProfile = await fetchProfile(nextUser.uid);
+
         startTransition(() => {
-          setUser(null);
+          setUser(nextUser);
+          setProfile(nextProfile);
+          setLoading(false);
+        });
+      } catch (error) {
+        console.error('Failed to initialize auth state:', error);
+        startTransition(() => {
+          setUser(nextUser ?? null);
           setProfile(null);
           setLoading(false);
         });
-
-        return;
       }
-
-      const nextProfile = await fetchProfile(nextUser.uid);
-
-      startTransition(() => {
-        setUser(nextUser);
-        setProfile(nextProfile);
-        setLoading(false);
-      });
     });
 
     return unsubscribe;

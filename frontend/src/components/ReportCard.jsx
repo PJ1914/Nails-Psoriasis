@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { formatDate, severityTone } from '../utils/formatters';
 
-export default function ReportCard({ report }) {
+export default function ReportCard({ report, onDelete, onEdit }) {
   return (
     <div className="panel p-5">
       <div className="flex items-start justify-between gap-4">
@@ -28,9 +28,29 @@ export default function ReportCard({ report }) {
           </span>
         ))}
       </div>
-      <Link to={`/results/${report.id}`} className="button-secondary mt-6">
-        View Details
-      </Link>
+      <div className="mt-6 flex gap-2">
+        <Link to={`/results/${report.id}`} className="button-secondary flex-1">
+          View Details
+        </Link>
+        {onEdit && (
+          <button
+            onClick={() => onEdit(report)}
+            className="rounded-xl border-2 border-slatebrand-200 px-4 py-2 text-sm font-semibold text-slatebrand-700 hover:border-slatebrand-300 hover:bg-slatebrand-50"
+            title="Edit report"
+          >
+            ✏️
+          </button>
+        )}
+        {onDelete && (
+          <button
+            onClick={() => onDelete(report)}
+            className="rounded-xl border-2 border-rose-200 px-4 py-2 text-sm font-semibold text-rose-700 hover:border-rose-300 hover:bg-rose-50"
+            title="Delete report"
+          >
+            🗑️
+          </button>
+        )}
+      </div>
     </div>
   );
 }

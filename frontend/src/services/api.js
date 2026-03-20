@@ -19,4 +19,16 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.data?.error) {
+      const apiError = new Error(error.response.data.error);
+      apiError.status = error.response.status;
+      throw apiError;
+    }
+    throw error;
+  }
+);
+
 export default api;

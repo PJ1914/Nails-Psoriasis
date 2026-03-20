@@ -3,11 +3,11 @@ import { useAuth } from '../hooks/useAuth';
 import ProtectedRoute from './ProtectedRoute';
 
 export default function AdminRoute({ children }) {
-  const { profile } = useAuth();
+  const { profile, loading } = useAuth();
 
   return (
     <ProtectedRoute>
-      {profile?.role === 'doctor' ? children : <Navigate to="/dashboard" replace />}
+      {loading ? null : profile?.role === 'doctor' ? children : <Navigate to="/dashboard" replace />}
     </ProtectedRoute>
   );
 }

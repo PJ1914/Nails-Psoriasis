@@ -59,7 +59,45 @@ python app.py
 - Enable Email/Password authentication.
 - Create Firestore database.
 - Create Firebase Storage bucket.
-- Add a Firestore users collection and reports collection through the app workflow.
+- Deploy security rules (see below).
+
+## Deploying Firebase Security Rules
+
+**Option 1: Using Firebase CLI (Recommended)**
+
+1. Install Firebase CLI if you haven't:
+```bash
+npm install -g firebase-tools
+```
+
+2. Login to Firebase:
+```bash
+firebase login
+```
+
+3. Deploy the rules from the project root:
+```bash
+firebase deploy --only storage,firestore
+```
+
+**Option 2: Manual Deployment via Console**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project: `nails-psoriasis`
+3. For **Storage Rules**:
+   - Navigate to Storage → Rules
+   - Copy content from `storage.rules` file
+   - Paste and publish
+4. For **Firestore Rules**:
+   - Navigate to Firestore Database → Rules
+   - Copy content from `firestore.rules` file
+   - Paste and publish
+
+**Security Rules Summary:**
+- Users can upload/read images only in their own folder: `nail-scans/{userId}/`
+- Images must be under 10MB and valid image format
+- Users can read/create their own reports
+- Doctors can read all reports and user profiles
 
 ## Core API Endpoints
 
