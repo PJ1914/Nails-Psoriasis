@@ -84,13 +84,13 @@ export default function DashboardPage() {
             <div className="panel p-6">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-slatebrand-500">Quick actions</p>
               <div className="mt-6 grid gap-4">
-                <Link to="/upload" className="rounded-3xl bg-slatebrand-900 p-5 text-white">
+                <Link to="/upload" className="rounded-3xl bg-slatebrand-900 dark:bg-slatebrand-700 p-5 text-white active:scale-95 transition-transform duration-200 hover:shadow-lg">
                   <p className="text-lg font-bold">Start a new assessment</p>
-                  <p className="mt-2 text-sm text-slatebrand-100">Upload a fresh clinical image and trigger the prediction API.</p>
+                  <p className="mt-2 text-sm text-slatebrand-100 dark:text-slatebrand-200">Upload a fresh clinical image and trigger the prediction API.</p>
                 </Link>
-                <Link to="/history" className="rounded-3xl bg-white p-5 shadow-soft">
-                  <p className="text-lg font-bold text-slatebrand-900">Review longitudinal history</p>
-                  <p className="mt-2 text-sm text-slatebrand-600">Inspect previous results and monitor changes over time.</p>
+                <Link to="/history" className="rounded-3xl bg-white dark:bg-slatebrand-800 p-5 shadow-soft active:scale-95 transition-transform duration-200 hover:shadow-lg">
+                  <p className="text-lg font-bold text-slatebrand-900 dark:text-white">Review longitudinal history</p>
+                  <p className="mt-2 text-sm text-slatebrand-600 dark:text-slatebrand-300">Inspect previous results and monitor changes over time.</p>
                 </Link>
               </div>
             </div>

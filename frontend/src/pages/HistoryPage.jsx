@@ -138,7 +138,7 @@ export default function HistoryPage() {
                   value={editForm.notes}
                   onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
                   rows={4}
-                  className="mt-2 w-full rounded-xl border-2 border-slatebrand-200 px-4 py-3 text-slatebrand-900 focus:border-slatebrand-400 focus:outline-none"
+                  className="mt-2 w-full rounded-xl border-2 border-slatebrand-200 dark:border-slatebrand-700 bg-white dark:bg-slatebrand-900 px-4 py-3 text-slatebrand-900 dark:text-white focus:border-slatebrand-400 dark:focus:border-slatebrand-500 focus:outline-none transition-colors"
                   placeholder="Add any notes about this report..."
                 />
               </div>
@@ -184,7 +184,7 @@ export default function HistoryPage() {
               Are you sure you want to delete this report? This action cannot be undone.
             </p>
 
-            <div className="mt-4 rounded-xl bg-slatebrand-50 p-4">
+            <div className="mt-4 rounded-xl bg-slatebrand-50 dark:bg-slatebrand-800 p-4">
               <div className="text-sm">
                 <p className="font-semibold text-slatebrand-900">
                   NAPSI Score: {deleteConfirm.napsi_score}

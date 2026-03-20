@@ -60,14 +60,14 @@ export default function UploadPage() {
         <FileDropzone file={file} onFileSelect={setFile} />
 
         <div className="panel p-6">
-          <h2 className="text-2xl font-bold text-slatebrand-900">Preview and submit</h2>
+          <h2 className="text-2xl font-bold text-slatebrand-900 dark:text-white transition-colors duration-300">Preview and submit</h2>
           <p className="mt-3 muted-text">Verify the image before initiating the prediction pipeline.</p>
 
-          <div className="mt-6 overflow-hidden rounded-3xl bg-slatebrand-100">
+          <div className="mt-6 overflow-hidden rounded-3xl bg-slatebrand-100 dark:bg-slatebrand-900/50">
             {previewUrl ? (
-              <img src={previewUrl} alt="Selected nail" className="h-[360px] w-full object-cover" />
+              <img src={previewUrl} alt="Selected nail" className="h-[360px] w-full object-contain" />
             ) : (
-              <div className="flex h-[360px] items-center justify-center text-sm font-semibold text-slatebrand-500">
+              <div className="flex h-[360px] items-center justify-center text-sm font-semibold text-slatebrand-500 dark:text-slatebrand-400 transition-colors duration-300">
                 Image preview will appear here.
               </div>
             )}

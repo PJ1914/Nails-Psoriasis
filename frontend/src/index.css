@@ -13,9 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark {
+  color: #f7f2ea;
+  background: #1e292e; /* dark slate background */
+}
+
 body {
   margin: 0;
   min-width: 320px;
+  @apply bg-sand dark:bg-[#1e292e] text-slatebrand-900 dark:text-sand transition-colors duration-300;
 }
 
 a {
@@ -31,25 +37,25 @@ textarea {
 }
 
 .panel {
-  @apply rounded-3xl border border-white/60 bg-white/85 shadow-soft backdrop-blur;
+  @apply rounded-3xl border border-white/60 dark:border-white/10 bg-white/80 dark:bg-slatebrand-800/80 shadow-soft backdrop-blur-xl transition-all duration-500 ease-out md:hover:-translate-y-1 md:hover:shadow-2xl dark:md:hover:shadow-slatebrand-900/50;
 }
 
 .button-primary {
-  @apply inline-flex items-center justify-center rounded-2xl bg-slatebrand-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slatebrand-800 disabled:cursor-not-allowed disabled:opacity-60;
+  @apply inline-flex items-center justify-center rounded-2xl bg-slatebrand-700 dark:bg-slatebrand-600 px-4 py-3 sm:px-5 sm:py-3 text-sm font-semibold text-white transition hover:bg-slatebrand-800 dark:hover:bg-slatebrand-500 disabled:cursor-not-allowed disabled:opacity-60 shadow-md hover:shadow-lg active:scale-95 duration-200;
 }
 
 .button-secondary {
-  @apply inline-flex items-center justify-center rounded-2xl border border-slatebrand-200 bg-white px-5 py-3 text-sm font-semibold text-slatebrand-700 transition hover:border-slatebrand-300 hover:bg-slatebrand-50;
+  @apply inline-flex items-center justify-center rounded-2xl border border-slatebrand-200 dark:border-slatebrand-700 bg-white dark:bg-slatebrand-900 px-4 py-3 sm:px-5 sm:py-3 text-sm font-semibold text-slatebrand-700 dark:text-slatebrand-100 transition hover:border-slatebrand-300 dark:hover:border-slatebrand-600 hover:bg-slatebrand-50 dark:hover:bg-slatebrand-800 shadow-sm hover:shadow active:scale-95 duration-200;
 }
 
 .input-field {
-  @apply w-full rounded-2xl border border-slatebrand-200 bg-white px-4 py-3 text-sm text-slatebrand-900 outline-none transition focus:border-slatebrand-500 focus:ring-2 focus:ring-slatebrand-100;
+  @apply w-full rounded-2xl border border-slatebrand-200 dark:border-slatebrand-700 bg-white/70 dark:bg-slatebrand-900/50 px-4 py-3 text-sm text-slatebrand-900 dark:text-slatebrand-100 outline-none backdrop-blur-md shadow-sm transition focus:border-slatebrand-500 dark:focus:border-slatebrand-400 focus:ring-2 focus:ring-slatebrand-100 dark:focus:ring-slatebrand-800 hover:shadow-md;
 }
 
 .section-title {
-  @apply text-2xl font-extrabold tracking-tight text-slatebrand-900 sm:text-3xl;
+  @apply text-2xl font-extrabold tracking-tight text-slatebrand-900 dark:text-white sm:text-3xl lg:text-4xl;
 }
 
 .muted-text {
-  @apply text-sm leading-6 text-slatebrand-600;
+  @apply text-sm md:text-base leading-6 text-slatebrand-600 dark:text-slatebrand-300;
 }

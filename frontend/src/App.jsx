@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import { useAuth } from './hooks/useAuth';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -17,9 +18,9 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function AppShell({ children }) {
   return (
-    <div className="min-h-screen bg-sand text-slatebrand-900">
+    <div className="min-h-screen bg-sand dark:bg-[#1e292e] text-slatebrand-900 dark:text-sand transition-colors duration-300">
       <Navbar />
-      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-4 pb-8 pt-28 sm:px-6 lg:px-8">
         {children}
       </main>
     </div>
@@ -31,8 +32,10 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-sand">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slatebrand-200 border-t-slatebrand-700" />
+      <div className="flex min-h-screen items-center justify-center bg-sand dark:bg-[#1e292e] px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl pt-28">
+           <LoadingSpinner label="Authenticating session..." />
+        </div>
       </div>
     );
   }
@@ -42,7 +45,7 @@ export default function App() {
       <Suspense
         fallback={
           <div className="flex min-h-[50vh] items-center justify-center">
-            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slatebrand-200 border-t-slatebrand-700" />
+            <LoadingSpinner label="Loading module..." />
           </div>
         }
       >

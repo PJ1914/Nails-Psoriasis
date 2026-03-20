@@ -9,11 +9,12 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase/config';
+import { auth, db, googleProvider } from '../firebase/config';
 
 const AuthContext = createContext(null);
 
@@ -102,6 +103,29 @@ export function AuthProvider({ children }) {
     return credentials.user;
   };
 
+  const loginWithGoogle = async () => {
+    const result = await signInWithPopup(auth, googleProvider);
+    const resultUser = result.user;
+    
+    let nextProfile = await fetchProfile(resultUser.uid);
+    
+    // If new user, create a profile in Firestore
+    if (!nextProfile) {
+      await setDoc(doc(db, 'users', resultUser.uid), {
+        uid: resultUser.uid,
+        name: resultUser.displayName || 'Google User',
+        email: resultUser.email,
+        role: 'user',
+        created_at: new Date().toISOString(),
+      });
+      nextProfile = await fetchProfile(resultUser.uid);
+    }
+
+    setUser(resultUser);
+    setProfile(nextProfile);
+    return resultUser;
+  };
+
   const logout = () => signOut(auth);
 
   return (
@@ -111,6 +135,7 @@ export function AuthProvider({ children }) {
         profile,
         loading,
         login,
+        loginWithGoogle,
         register,
         logout,
         refreshProfile,
