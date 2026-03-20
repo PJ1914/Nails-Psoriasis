@@ -1,8 +1,11 @@
 {
-  "storage": {
-    "rules": "storage.rules"
-  },
   "firestore": {
     "rules": "firestore.rules"
-  }
+  },
+  "storage": [
+    {
+      "bucket": "nails-psoriasis.appspot.com",
+      "rules": "storage.rules"
+    }
+  ]
 }
